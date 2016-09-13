@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# TODO: test interface/call for sending container id back to RPC
-
 from __future__ import unicode_literals
 from docopt import docopt
 from ansible.inventory import Inventory
@@ -40,7 +38,6 @@ Options:
 
 
 def main(args):
-    """docstring for main"""
     host_list = []
     for inv in args.get("INVENTORY"):
         if not os.path.exists(inv):
