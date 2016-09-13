@@ -35,7 +35,7 @@ Options:
   -v --verbose              Debug.
   -o=FILE --output=<FILE>   Save output as file.
   -H=FILE --header=<FILE>   Load custom header. [default: header]
-  -i --indent=<SPACE>       Indent. [default: 4]
+  -i --indent=<SPACE>       Indent. [default: 2]
 """ % dict(self_name=os.path.basename(__file__))
 
 
