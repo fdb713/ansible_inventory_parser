@@ -8,7 +8,7 @@ pip install -r ./requirements.txt
 
 # docopt
 
-Usage:
+Usage:  
   parse.py [--header=<FILE>] [--output=<FILE>] [--verbose] [--indent=<INDENT>] INVENTORY...  
   parse.py -h | --help  
   parse.py -V | --version  
