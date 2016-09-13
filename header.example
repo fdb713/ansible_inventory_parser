@@ -1,0 +1,9 @@
+ServerAliveInterval 30
+ServerAliveCountMax 120
+
+Host github.com
+  StrictHostKeyChecking no
+Host gist.github.com
+  StrictHostKeyChecking no
+Host bitbucket.org
+  StrictHostKeyChecking no
