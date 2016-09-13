@@ -1,2 +1,21 @@
 # ansible_inventory_parser
-parse ansible inventory file to ssh config
+Parse ansible inventory files/directories to ssh config
+
+# install requirements
+```bash
+pip install -r ./requirements.txt
+```
+
+# docopt
+
+Usage:
+  parse.py [--header=<FILE>] [--output=<FILE>] [--verbose] INVENTORY...
+  parse.py -h | --help
+  parse.py -V | --version
+
+Options:
+  -h --help                 Show this screen.
+  -V --version              Show version.
+  -v --verbose              Debug.
+  -o=FILE --output=<FILE>   Save output as file.
+  -H=FILE --header=<FILE>   Load custom header. Default: "header" file in current directory
