@@ -25,7 +25,7 @@ __doc__ = """
 Parse ansible inventory files/directories to ssh config
 
 Usage:
-  %(self_name)s [--header=<FILE>] [--output=<FILE>] [--verbose] INVENTORY...
+  %(self_name)s [--header=<FILE>] [--output=<FILE>] [--verbose] [--indent=<INDENT>] INVENTORY...
   %(self_name)s -h | --help
   %(self_name)s -V | --version
 
@@ -34,7 +34,8 @@ Options:
   -V --version              Show version.
   -v --verbose              Debug.
   -o=FILE --output=<FILE>   Save output as file.
-  -H=FILE --header=<FILE>   Load custom header. Default: "header" file in current directory
+  -H=FILE --header=<FILE>   Load custom header. [default: header]
+  -i --indent=<SPACE>       Indent. [default: 4]
 """ % dict(self_name=os.path.basename(__file__))
 
 
@@ -53,12 +54,14 @@ def main(args):
     logger.debug(host_list)
     subprocess.call("cat %s > %s" % (" ".join(host_list), tmp_path), shell=True)
 
-    header_path = args.get("--header") if args.get("--header") else "header"
+    header_path = args.get("--header")
     if os.path.exists(header_path):
         header = open(header_path, "r").read()
     else:
         header = None
         logger.warn("No custom header file found.")
+
+    indent = " " * int(args.get("--indent"))
 
     logger.debug(header)
     output = "" + header if header else ""
@@ -66,24 +69,24 @@ def main(args):
     loader = DataLoader()
     inventory = Inventory(loader=loader, variable_manager=variable_manager, host_list=tmp_path)
 
-    for hostname in inventory.get_hosts():
-        host = inventory.get_host(hostname)
-        logger.debug(hostname)
-        logger.debug(host)
+    for host in inventory.get_hosts():
+        output += "\n"
         host_all_vars = host.get_vars()
         host_all_vars.update(host.get_group_vars())
-        output += "Host %s\n" % hostname
-        output += "  Hostname %s\n" % host.address
+        output += "Host %s\n" % host.get_name()
+        output += "%sHostname %s\n" % (indent, host.address)
+        custom_user = False
 
         for user in ("ansible_ssh_user", "ansible_user"):
             if user in host_all_vars:
-                output += "  User %s\n" % host_all_vars[user]
-            else:
-                output += "  User root\n" % host_all_vars[user]
+                output += "%sUser %s\n" % (indent, host_all_vars[user])
+                custom_user = True
+        if not custom_user:
+            output += "%sUser root\n" % indent
 
         for port in ("ansible_ssh_port", "ansible_port"):
             if port in host_all_vars:
-                output += "  Port %d\n" % host_all_vars[port]
+                output += "%sPort %d\n" % (indent, host_all_vars[port])
 
     if args.get("--output"):
         with open(args.get("--output"), "w") as f:
