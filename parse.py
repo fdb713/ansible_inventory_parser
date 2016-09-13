@@ -70,7 +70,6 @@ def main(args):
     inventory = Inventory(loader=loader, variable_manager=variable_manager, host_list=tmp_path)
 
     for host in inventory.get_hosts():
-        output += "\n"
         host_all_vars = host.get_vars()
         host_all_vars.update(host.get_group_vars())
         output += "Host %s\n" % host.get_name()
@@ -87,6 +86,8 @@ def main(args):
         for port in ("ansible_ssh_port", "ansible_port"):
             if port in host_all_vars:
                 output += "%sPort %d\n" % (indent, host_all_vars[port])
+
+        output += "\n"
 
     if args.get("--output"):
         with open(args.get("--output"), "w") as f:

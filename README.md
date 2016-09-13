@@ -20,3 +20,8 @@ Options:
   -o=FILE --output=<FILE>   Save output as file.  
   -H=FILE --header=<FILE>   Load custom header. [default: header]  
   -i --indent=<SPACE>       Indent. [default: 2]  
+
+# example
+```bash
+./parse.py /etc/ansible/hosts -o /tmp/config -H header.example
+```
