@@ -1,3 +1,4 @@
 *.py[c|o]
 *.sw[p|o]
 header
+gen.sh
